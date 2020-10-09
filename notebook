@@ -1,0 +1,7 @@
+执行命令查看加密方式
+use mysql;
+select user,plugin from user where user='revival';
+执行命令修改加密方式
+alter user 'revival'@'%' identified with mysql_native_password by 'admin';
+属性权限使配置生效
+flush privileges;
