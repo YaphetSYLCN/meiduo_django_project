@@ -42,7 +42,7 @@ let vm = new Vue(
 
             // 校验确认密码
             check_password2() {
-                this.error_password2 = this.password != this.password2;
+                this.error_password2 = this.password !== this.password2;
             },
 
             // 校验手机号码
