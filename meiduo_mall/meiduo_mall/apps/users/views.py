@@ -2,7 +2,8 @@ from django.db import DatabaseError
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from django.http import HttpResponseForbidden, HttpResponse
+from django.http import HttpResponseForbidden
+from django.contrib.auth import login
 
 import re
 from .models import User
@@ -37,7 +38,7 @@ class RegisterView(View):
 
         # 校验参数
         # 判断参数是否齐全
-        if any([username, password, password2, mobile, allow]):
+        if not all([username, password, password2, mobile, allow]):
             return HttpResponseForbidden("缺少必填项")
 
         # 判断用户名是否为5-20个字符
@@ -62,9 +63,12 @@ class RegisterView(View):
 
         # 保存注册数据
         try:
-            User.objects.create_user(username=username, password=password, mobile=mobile)
+            user = User.objects.create_user(username=username, password=password, mobile=mobile)
         except DatabaseError:
             return render(request, "register.html", {"register_errmsg": "用户注册失败"})
+
+        # 用户状态保持
+        login(request, user)
 
         # 响应结果
         return redirect(reverse("contents:index"))
