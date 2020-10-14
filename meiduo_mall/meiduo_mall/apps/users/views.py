@@ -2,11 +2,12 @@ from django.db import DatabaseError
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.contrib.auth import login
 
 import re
 from .models import User
+from meiduo_mall.utils.response_code import RETCODE, err_msg
 
 
 # Create your views here.
@@ -72,3 +73,19 @@ class RegisterView(View):
 
         # 响应结果
         return redirect(reverse("contents:index"))
+
+
+class UsernameCountView(View):
+    # 判断用户名是否重复注册
+
+    def get(self, request, username):
+        """
+        :param request:
+        :param username: 用户名
+        :return: JSON
+        """
+
+        # 查询数据库中是否存在username
+        count = User.objects.filter(username=username).count()
+        # 响应结果
+        return JsonResponse({"code": RETCODE.OK, "errmsg": err_msg.get(RETCODE.OK), "count": count})
