@@ -87,5 +87,5 @@ class UsernameCountView(View):
 
         # 查询数据库中是否存在username
         count = User.objects.filter(username=username).count()
-        # 响应结果
+        # 响应结果   
         return JsonResponse({"code": RETCODE.OK, "errmsg": err_msg.get(RETCODE.OK), "count": count})
