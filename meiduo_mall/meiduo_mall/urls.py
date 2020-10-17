@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include(('users.urls', 'users'), namespace='users')),
     path('contents/', include(('contents.urls', 'contents'), namespace='contents')),
+    path('verify/', include(('verifications.urls', 'verifications'))),
 ]
